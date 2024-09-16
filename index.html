@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="ItogProekt"></h1>
+    <form method="get" name="signin">
+        <input type="text" name="name">
+        <p id="nameerror" class="error"></p>
+        <input type="text" name="age">
+        <p id="ageerror" class="error"></p>
+        <input type="submit" class="btn">
+    </form>
+
+    <div id="newsForm">
+        <input type="text" id="newsTitle" placeholder="Название новости">
+        <p id="titleError" class="error"></p>
+        <textarea id="newsContent" placeholder="Текст новости"></textarea>
+        <p id="contentError" class="error"></p>
+        <button onclick="addNews()">Добавить новость</button>
+    </div>
+      
+    <div id="newsList"></div>
+
+    <button id="darkMode">b</button>
+    <button id="lightMode">w</button>
+
+    <script>
+        let form = document.forms.signin;
+        let nameinput = form.elements.name;
+        let ageinput = form.elements.age;
+
+        form.addEventListener('submit', userSignin);
+
+        let flag = true;
+        let user;
+        function userSignin(event){
+            event.preventDefault();
+            nameerror.innerHTML = '';
+            ageerror.innerHTML = '';
+            flag = true;
+
+            if(ageinput.classList.contains('error__input')){
+                ageinput.classList.remove('error__input');
+            }
+            if(nameinput.classList.contains('error__input')){
+                nameinput.classList.remove('error__input');
+            }
+
+            if(!nameinput.value){
+                nameerror.innerHTML = 'Введите имя';
+                nameinput.classList.add('error__input');
+                flag = false;
+            }else if(nameinput.value.length<2){
+                nameinput.classList.add('error__input');
+                nameerror.innerHTML = 'Введите не менее 2 символов'
+            }else{
+                nameerror.innerHTML = '';
+                nameinput.classList.remove('error__input')
+            }
+
+            if(!ageinput.value){
+                ageerror.innerHTML = 'Введите год рождения';
+                ageinput.classList.add('error__input');
+                flag = false;
+            } else if(ageinput.value.length !=4){
+                ageerror.innerHTML = 'Год рождения должен состоять из 4 символов Бобик';
+                ageenput.classList.add('error__input');
+                flag = false;
+            } else if (2024 - ageinput.value < 18){
+                ageerror.innerHTML = 'ТЫ МАЛЕНЬКИЙ БОБИК';
+                ageinput.classList.add('error__input');
+                flag = false;
+            }
+
+            if(flag){
+                ItogProekt.innerHTML = 'Итоговый проект за базовый Js';
+            }
+        }
+
+        const news = [];
+        const titleInput = document.getElementById('newsTitle');
+        const contentInput = document.getElementById('newsContent');
+        const newsList = document.getElementById('newsList');
+        const titleError = document.getElementById('titleError');
+        const contentError = document.getElementById('contentError');
+
+        function addNews() {
+            let flag = true;
+
+            titleError.innerHTML = '';
+            contentError.innerHTML = '';
+
+            if (titleInput.classList.contains('error__input')) {
+                titleInput.classList.remove('error__input');
+            }   
+            if (contentInput.classList.contains('error__input')) {
+                contentInput.classList.remove('error__input');
+            }
+
+            if (!titleInput.value) {
+                titleError.innerHTML = 'Введите название';
+                titleInput.classList.add('error__input');
+                flag = false;
+            } else if (titleInput.value.length < 8) {
+                titleInput.classList.add('error__input');
+                titleError.innerHTML = 'Введите не менее 8 символов';
+            } else {
+                titleError.innerHTML = '';
+                titleInput.classList.remove('error__input');
+            }
+
+            if (!contentInput.value) {
+                contentError.innerHTML = 'Введите текст';
+                contentInput.classList.add('error__input');
+                flag = false;
+            } else if (contentInput.value.length > 300) {
+                contentError.innerHTML = 'Слишком много текста';
+                contentInput.classList.add('error__input');
+                flag = false;
+            }
+
+            if (flag) {
+                news.push({ title: titleInput.value, content: contentInput.value });
+                displayNews();
+            }
+        }
+
+        function displayNews() {
+            let content = '';
+            news.forEach(item => {
+                content += `<div><h3>${item.title}</h3><p>${item.content}</p></div>`;
+            });
+            newsList.innerHTML = content;
+        }
+
+        document.getElementById('darkMode').addEventListener('click', function(){
+            document.body.style.backgroundColor = 'black';
+            document.body.style.Color = 'white'; 
+        });
+        document.getElementById('lightMode').addEventListener('click', function(){
+            document.body.style.backgroundColor = 'white';
+            document.body.style.Color = 'black'; 
+        });
+    </script>
+</body>
+</html>
